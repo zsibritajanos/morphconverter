@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<project name="morphconverter" default="compile" basedir=".">
+	<property environment="env" />
+	<property name="src" value="src" />
+	<property name="build" value="./bin" />
+	<presetdef name="javac">
+	    <javac includeantruntime="false" />
+	</presetdef>
+
+	<path id="compile.all.classpath">
+	</path>
+
+	<!-- init -->
+	<target name="init">
+		<tstamp>
+			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<mkdir dir="${build}"/>
+	</target>	
+
+	<!-- compile -->
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${build}" classpathref="compile.all.classpath" debug="on" encoding="UTF-8" sourcepath="">
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="morphconverter-0.1.jar">
+
+			<fileset dir="${build}">
+				<include name="**/*.class"/>
+			</fileset>
+			
+			<manifest>
+			  <attribute name="Built-By" value="${user.name}"/>
+			  <attribute name="Main-Class" value="hu.u_szeged.morphconverter.Magyarlanc"/>
+			  <attribute name="Implementation-Version" value="${DSTAMP}-${TSTAMP}"/>   
+			  <attribute name="Built-Date" value="${TODAY}"/>
+			</manifest>
+			</jar>
+	</target>
+	
+	<target name="clean">
+		<delete verbose="true" quiet="true">
+			<fileset dir="${build}">
+				<include name="**/*.class"/>
+			</fileset>
+		</delete>
+	</target>
+
+</project>
